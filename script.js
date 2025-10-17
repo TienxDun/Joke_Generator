@@ -16,7 +16,8 @@ let originalJokeText = '';
 let originalPunchline = '';
 
 // Gemini API configuration (replace with your actual API key)
-const GEMINI_API_KEY = 'AIzaSyBV7Ik9d0ES11mp8y0zwLkpntXxuVpyFSY'; // Get from https://makersuite.google.com/app/apikey
+// API Keys - Sử dụng environment variables cho production
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyBV7Ik9d0ES11mp8y0zwLkpntXxuVpyFSY'; // Fallback for development // Get from https://makersuite.google.com/app/apikey
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 // JokeAPI endpoint - using v2.jokeapi.dev
