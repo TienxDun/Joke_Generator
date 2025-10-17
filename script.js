@@ -15,10 +15,6 @@ let isTranslated = false;
 let originalJokeText = '';
 let originalPunchline = '';
 
-// Gemini API configuration (replace with your actual API key)
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyBV7Ik9d0ES11mp8y0zwLkpntXxuVpyFSY'; // Get from https://makersuite.google.com/app/apikey
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-
 // JokeAPI endpoint - using v2.jokeapi.dev
 const API_URL = 'https://v2.jokeapi.dev/joke/Any?safe-mode=true';
 const PUNCHLINE_DELAY = 500; // Delay in ms before showing punchline
@@ -48,32 +44,25 @@ function parseMarkdownToHTML(markdown) {
         .replace(/\n/g, '<br>'); // Line breaks
 }
 
-// Function to explain joke using Gemini
+// Function to explain joke using backend API
 async function explainJokeWithGemini(jokeText) {
     try {
-        const response = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
+        const response = await fetch('/api/explain', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{
-                        text: `Giải thích joke này một cách đơn giản và dễ hiểu bằng tiếng Việt: "${jokeText}"`
-                    }]
-                }]
-            })
+            body: JSON.stringify({ jokeText })
         });
 
         if (!response.ok) {
-            throw new Error('Gemini API failed');
+            throw new Error('API failed');
         }
 
         const data = await response.json();
-        const rawExplanation = data.candidates[0].content.parts[0].text.trim();
-        return parseMarkdownToHTML(rawExplanation);
+        return parseMarkdownToHTML(data.explanation);
     } catch (error) {
-        console.error('Gemini explanation error:', error);
+        console.error('Explanation error:', error);
         return 'Không thể giải thích joke này lúc này. Vui lòng thử lại sau.';
     }
 }
