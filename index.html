@@ -8,14 +8,49 @@
 </head>
 <body>
     <div class="container">
-        <h1>Máy Tạo Joke Ngẫu Nhiên 😂</h1>
-        <div class="joke-container">
-            <p id="joke-text">Nhấn nút bên dưới để nhận một joke ngẫu nhiên!</p>
-            <p id="punchline"></p>
-        </div>
-        <button id="get-joke-btn" class="joke-btn">Nhận Joke Mới</button>
-        <button id="translate-btn" class="joke-btn" style="display: none;">Dịch sang Tiếng Việt</button>
-        <div class="loader" id="loader"></div>
+        <header class="header">
+            <h1>Máy Tạo Joke Ngẫu Nhiên</h1>
+            <div class="emoji">😂</div>
+        </header>
+
+        <main class="main-content">
+            <div class="joke-container">
+                <div class="joke-display">
+                    <p id="joke-text">Nhấn nút bên dưới để nhận một joke ngẫu nhiên!</p>
+                    <p id="punchline"></p>
+                </div>
+
+                <div id="explanation" class="explanation" style="display: none;">
+                    <div class="explanation-header">
+                        <span class="explanation-icon">💡</span>
+                        <span class="explanation-title">Giải thích</span>
+                        <button id="close-explanation" class="close-btn">×</button>
+                    </div>
+                    <div class="explanation-content"></div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="get-joke-btn" class="joke-btn primary-btn">
+                    <span class="btn-icon">🎲</span>
+                    <span class="btn-text">Nhận Joke Mới</span>
+                </button>
+
+                <div class="secondary-buttons">
+                    <button id="translate-btn" class="joke-btn secondary-btn" style="display: none;">
+                        <span class="btn-icon">🌐</span>
+                        <span class="btn-text">Dịch Tiếng Việt</span>
+                    </button>
+
+                    <button id="explain-btn" class="joke-btn secondary-btn" style="display: none;">
+                        <span class="btn-icon">🤔</span>
+                        <span class="btn-text">Giải thích</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="loader" id="loader"></div>
+        </main>
     </div>
     <script src="script.js"></script>
 </body>

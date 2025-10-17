@@ -3,13 +3,21 @@ const jokeText = document.getElementById('joke-text');
 const punchline = document.getElementById('punchline');
 const jokeBtn = document.getElementById('get-joke-btn');
 const translateBtn = document.getElementById('translate-btn');
+const explainBtn = document.getElementById('explain-btn');
+const closeExplanationBtn = document.getElementById('close-explanation');
 const loader = document.getElementById('loader');
+const explanation = document.getElementById('explanation');
+const explanationContent = document.querySelector('.explanation-content');
 
 // Store current joke data
 let currentJoke = null;
 let isTranslated = false;
 let originalJokeText = '';
 let originalPunchline = '';
+
+// Gemini API configuration (replace with your actual API key)
+const GEMINI_API_KEY = 'AIzaSyBV7Ik9d0ES11mp8y0zwLkpntXxuVpyFSY'; // Get from https://makersuite.google.com/app/apikey
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 // JokeAPI endpoint - using v2.jokeapi.dev
 const API_URL = 'https://v2.jokeapi.dev/joke/Any?safe-mode=true';
@@ -32,6 +40,44 @@ async function translateText(text) {
     }
 }
 
+// Function to parse basic markdown to HTML
+function parseMarkdownToHTML(markdown) {
+    return markdown
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+        .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
+        .replace(/\n/g, '<br>'); // Line breaks
+}
+
+// Function to explain joke using Gemini
+async function explainJokeWithGemini(jokeText) {
+    try {
+        const response = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: `Giải thích joke này một cách đơn giản và dễ hiểu bằng tiếng Việt: "${jokeText}"`
+                    }]
+                }]
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Gemini API failed');
+        }
+
+        const data = await response.json();
+        const rawExplanation = data.candidates[0].content.parts[0].text.trim();
+        return parseMarkdownToHTML(rawExplanation);
+    } catch (error) {
+        console.error('Gemini explanation error:', error);
+        return 'Không thể giải thích joke này lúc này. Vui lòng thử lại sau.';
+    }
+}
+
 // Function to fetch a random joke
 async function getJoke() {
     try {
@@ -39,6 +85,8 @@ async function getJoke() {
         loader.classList.add('active');
         jokeBtn.disabled = true;
         translateBtn.style.display = 'none';
+        explainBtn.style.display = 'none';
+        explanation.style.display = 'none';
         jokeText.textContent = '';
         punchline.textContent = '';
 
@@ -81,6 +129,7 @@ async function getJoke() {
         // Show translate button
         translateBtn.style.display = 'inline-block';
         translateBtn.textContent = 'Dịch sang Tiếng Việt';
+        explainBtn.style.display = 'inline-block';
 
     } catch (error) {
         // Handle errors
@@ -107,6 +156,7 @@ async function translateCurrentJoke() {
             punchline.textContent = originalPunchline;
             isTranslated = false;
             translateBtn.textContent = 'Dịch sang Tiếng Việt';
+            explainBtn.style.display = 'inline-block';
         } else {
             // Translate to Vietnamese
             if (currentJoke.type === 'single') {
@@ -123,6 +173,7 @@ async function translateCurrentJoke() {
             }
             isTranslated = true;
             translateBtn.textContent = 'Dịch sang Tiếng Anh';
+            explainBtn.style.display = 'none';
         }
     } catch (error) {
         console.error('Translation error:', error);
@@ -131,9 +182,41 @@ async function translateCurrentJoke() {
     }
 }
 
+// Function to explain the current joke
+async function explainJoke() {
+    if (!currentJoke || isTranslated) return;
+
+    explanation.style.display = 'block';
+    explanationContent.innerHTML = 'Đang giải thích...';
+    explainBtn.disabled = true;
+
+    try {
+        let jokeToExplain = '';
+        if (currentJoke.type === 'single') {
+            jokeToExplain = currentJoke.joke;
+        } else if (currentJoke.type === 'twopart') {
+            jokeToExplain = `${currentJoke.setup} ${currentJoke.delivery}`;
+        }
+
+        const aiExplanation = await explainJokeWithGemini(jokeToExplain);
+        explanationContent.innerHTML = aiExplanation;
+    } catch (error) {
+        explanationContent.innerHTML = 'Không thể giải thích joke này lúc này. Vui lòng thử lại sau.';
+    } finally {
+        explainBtn.disabled = false;
+    }
+}
+
+// Function to close explanation
+function closeExplanation() {
+    explanation.style.display = 'none';
+}
+
 // Add event listener to the button
 jokeBtn.addEventListener('click', getJoke);
 translateBtn.addEventListener('click', translateCurrentJoke);
+explainBtn.addEventListener('click', explainJoke);
+closeExplanationBtn.addEventListener('click', closeExplanation);
 
 // Optionally, load a joke when the page first loads
 // Uncomment the line below if you want an initial joke

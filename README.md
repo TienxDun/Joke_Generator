@@ -10,6 +10,8 @@ Một ứng dụng tạo joke ngẫu nhiên đơn giản và vui nhộn, lấy j
 - ⚡ Nhanh chóng và nhẹ nhàng
 - 🔒 Chế độ an toàn được bật (joke thân thiện với gia đình)
 - 🎭 Hỗ trợ cả joke một dòng và joke hai phần
+- 🤖 Giải thích joke chi tiết bằng AI (Google Gemini 1.5 Flash)
+- 🌐 Dịch joke sang tiếng Việt
 
 ## Demo
 
@@ -21,6 +23,19 @@ Một ứng dụng tạo joke ngẫu nhiên đơn giản và vui nhộn, lấy j
 2. Mở `index.html` trong trình duyệt web của bạn
 3. Nhấn nút "Nhận Joke Mới" để lấy một joke ngẫu nhiên
 4. Thưởng thức các joke! 🎉
+
+## Cài đặt API Key cho tính năng giải thích AI
+
+Để sử dụng tính năng giải thích joke chi tiết bằng AI:
+
+1. Đăng ký tài khoản tại [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Tạo API key mới
+3. Mở file `script.js` và thay thế `'AIzaSyBV7Ik9d0ES11mp8y0zwLkpntXxuVpyFSY'` bằng API key thực của bạn
+4. Lưu file và refresh trang web
+
+**Lưu ý:** API key sẽ được sử dụng trực tiếp trong frontend, nên chỉ sử dụng cho mục đích cá nhân. Trong production, nên sử dụng backend proxy để bảo mật.
+
+Xem file `test-api.md` để biết cách test API bằng command line.
 
 ## Công nghệ sử dụng
 

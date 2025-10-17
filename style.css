@@ -12,76 +12,221 @@ body {
     justify-content: center;
     align-items: center;
     padding: 20px;
+    line-height: 1.6;
 }
 
 .container {
     background: white;
     border-radius: 20px;
-    padding: 40px;
+    padding: 0;
     max-width: 600px;
     width: 100%;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
 }
 
-h1 {
-    color: #333;
-    margin-bottom: 30px;
+/* Header */
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px 40px 20px;
+    text-align: center;
+    position: relative;
+}
+
+.header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.emoji {
     font-size: 2.5rem;
+    opacity: 0.9;
+}
+
+/* Main Content */
+.main-content {
+    padding: 40px;
 }
 
 .joke-container {
+    margin-bottom: 30px;
+}
+
+.joke-display {
     background: #f8f9fa;
     border-radius: 15px;
     padding: 30px;
-    min-height: 150px;
-    margin-bottom: 30px;
+    min-height: 120px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 15px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 #joke-text {
     font-size: 1.2rem;
     color: #333;
-    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 #punchline {
     font-size: 1.2rem;
     color: #667eea;
     font-weight: bold;
+    text-align: center;
+}
+
+/* Explanation */
+.explanation {
+    background: #f0f8ff;
+    border: 2px solid #e3f2fd;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.explanation-header {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e3f2fd;
+}
+
+.explanation-icon {
+    font-size: 1.2rem;
+}
+
+.explanation-title {
+    font-weight: 600;
+    color: #1976d2;
+    flex: 1;
+    text-align: center;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: #333;
+}
+
+.explanation-content {
+    padding: 20px;
+    font-size: 0.95rem;
+    color: #333;
     line-height: 1.6;
 }
 
-.joke-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 15px 40px;
-    font-size: 1.1rem;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.explanation strong {
+    color: #667eea;
     font-weight: 600;
 }
 
-.joke-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+.explanation em {
+    font-style: italic;
+    color: #764ba2;
 }
 
-.joke-btn:active {
+/* Button Group */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 18px 30px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.primary-btn:active {
     transform: translateY(0);
+}
+
+.secondary-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.secondary-btn {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    justify-content: center;
+}
+
+.secondary-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-icon {
+    font-size: 1.1rem;
+}
+
+.btn-text {
+    font-weight: 500;
 }
 
 .joke-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    transform: none !important;
 }
 
+/* Loader */
 .loader {
     border: 4px solid #f3f3f3;
     border-top: 4px solid #667eea;
@@ -93,25 +238,87 @@ h1 {
     display: none;
 }
 
-.loader.active {
-    display: block;
-}
-
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
-    h1 {
+    .container {
+        margin: 10px;
+    }
+
+    .header {
+        padding: 25px 20px 15px;
+    }
+
+    .header h1 {
+        font-size: 1.8rem;
+    }
+
+    .emoji {
         font-size: 2rem;
     }
-    
-    .container {
-        padding: 30px 20px;
+
+    .main-content {
+        padding: 25px 20px;
     }
-    
+
+    .joke-display {
+        padding: 20px;
+        min-height: 100px;
+    }
+
     #joke-text, #punchline {
         font-size: 1rem;
+    }
+
+    .button-group {
+        gap: 12px;
+    }
+
+    .primary-btn {
+        padding: 15px 25px;
+        font-size: 1rem;
+    }
+
+    .secondary-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .secondary-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .explanation-content {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.6rem;
+    }
+
+    .main-content {
+        padding: 20px 15px;
+    }
+
+    .joke-display {
+        padding: 15px;
+    }
+
+    .primary-btn {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
+
+    .secondary-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
     }
 }
