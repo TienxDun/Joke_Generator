@@ -5,7 +5,8 @@ const jokeBtn = document.getElementById('get-joke-btn');
 const loader = document.getElementById('loader');
 
 // JokeAPI endpoint - using v2.jokeapi.dev
-const API_URL = 'https://v2.jokeapi.dev/joke/Any?safe-mode';
+const API_URL = 'https://v2.jokeapi.dev/joke/Any?safe-mode=true';
+const PUNCHLINE_DELAY = 500; // Delay in ms before showing punchline
 
 // Function to fetch a random joke
 async function getJoke() {
@@ -41,7 +42,7 @@ async function getJoke() {
             // Show punchline after a short delay for better effect
             setTimeout(() => {
                 punchline.textContent = data.delivery;
-            }, 500);
+            }, PUNCHLINE_DELAY);
         }
 
     } catch (error) {
