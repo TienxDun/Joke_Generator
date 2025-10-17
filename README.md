@@ -55,122 +55,12 @@ Hoặc chạy locally bằng cách mở `index.html` trong trình duyệt web c�
 2. Thay thế `'AIzaSyBV7Ik9d0ES11mp8y0zwLkpntXxuVpyFSY'` bằng API key thực của bạn
 3. Lưu file và refresh trang web
 
-## 🔐 Bảo mật API Key - Các tùy chọn deploy an toàn
+### ⚠️ Lưu ý bảo mật
 
-### 🚫 Không nên làm: Hardcode API key trong code
-
-- API key sẽ bị lộ khi source code public
-- Bất kỳ ai cũng có thể xem và sử dụng API key của bạn
-- Dễ bị abuse và vượt quota
-
-### ✅ Tùy chọn 1: Environment Variables (Khuyến nghị)
-
-#### Với Netlify
-
-1. **Deploy lên Netlify**:
-   - Connect GitHub repository
-   - Build settings: Build command `npm run build` (nếu có), Publish directory `.`
-
-2. **Thêm Environment Variables**:
-   - Vào Site settings > Environment variables
-   - Thêm: `GEMINI_API_KEY` = `your_actual_api_key`
-   - Redeploy để áp dụng
-
-#### Với Vercel
-
-1. **Deploy lên Vercel**:
-   - Import project từ GitHub
-   - Vercel tự động detect framework (hoặc chọn "Other")
-
-2. **Thêm Environment Variables**:
-   - Vào Project settings > Environment Variables
-   - Thêm: `GEMINI_API_KEY` = `your_actual_api_key`
-   - Redeploy
-
-#### Local development
-
-```bash
-# Tạo file .env (copy từ .env.example)
-cp .env.example .env
-
-# Chỉnh sửa .env với API key thực
-GEMINI_API_KEY=your_actual_api_key
-
-# Chạy local server (cần cài dotenv nếu dùng Node.js)
-```
-
-### ✅ Tùy chọn 2: Backend Proxy (An toàn nhất)
-
-Tạo API endpoint riêng để gọi Gemini AI:
-
-#### Sử dụng Vercel Functions
-
-```javascript
-// api/explain-joke.js
-export default async function handler(req, res) {
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-  // Logic gọi Gemini API
-}
-```
-
-#### Sử dụng Netlify Functions
-
-```javascript
-// netlify/functions/explain-joke.js
-exports.handler = async (event) => {
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-  // Logic gọi Gemini API
-};
-```
-
-### ✅ Tùy chọn 3: Restrict API Key
-
-Trong Google AI Studio:
-
-- **Application restrictions**: Restrict to specific websites
-- **API restrictions**: Chỉ cho phép Gemini API
-
-⚠️ **Lưu ý**: Chỉ hoạt động với một số domain cụ thể, không linh hoạt.
-
-### ✅ Tùy chọn 4: Serverless Functions
-
-Sử dụng dịch vụ như:
-
-- **Cloudflare Workers**
-- **AWS Lambda**
-- **Google Cloud Functions**
-
-Frontend gọi function này thay vì trực tiếp Gemini API.
-
-### 📊 So sánh các tùy chọn
-
-| Tùy chọn | Độ an toàn | Độ phức tạp | Phí | Khuyến nghị |
-|----------|------------|-------------|-----|-------------|
-| Environment Variables | Cao | Thấp | Miễn phí | ⭐⭐⭐ |
-| Backend Proxy | Rất cao | Trung bình | Miễn phí | ⭐⭐⭐⭐ |
-| Restrict API Key | Trung bình | Thấp | Miễn phí | ⭐⭐ |
-| Serverless Functions | Rất cao | Cao | Thấp | ⭐⭐⭐ |
-
-### 🎯 Khuyến nghị cho dự án này
-
-1. **Dễ nhất**: Sử dụng **Vercel** với Environment Variables
-2. **An toàn nhất**: Tạo **Vercel Function** làm proxy
-3. **Tránh**: GitHub Pages (không hỗ trợ environment variables)
-
-### 🔧 Cách migrate hiện tại
-
-Code đã được cập nhật để hỗ trợ environment variables:
-
-```javascript
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'fallback_key';
-```
-
-**Các bước**:
-
-1. Chọn platform (Vercel/Netlify)
-2. Deploy code
-3. Thêm environment variable `GEMINI_API_KEY`
-4. Test và verify
+- API key hiện tại được hardcode trong frontend (chỉ dùng cho development)
+- **Không nên deploy lên production với API key hardcode**
+- Sử dụng environment variables hoặc backend proxy cho production
+- Xem hướng dẫn deploy an toàn bên dưới
 
 ## 🛠️ Công nghệ sử dụng
 
@@ -198,7 +88,7 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'fallback_key';
 
 ## 📁 Cấu trúc dự án
 
-```text
+```
 joke-generator/
 ├── index.html          # File HTML chính với cấu trúc responsive
 ├── style.css           # Stylesheet hiện đại với gradient và animations
@@ -269,6 +159,6 @@ Chúng tôi hoan nghênh mọi đóng góp!
 
 ---
 
-*Tạo bởi [TienxDun](https://github.com/TienxDun) với ❤️ và ☕*
+**Tạo bởi [TienxDun](https://github.com/TienxDun)** với ❤️ và ☕
 
-Hãy cười nhiều hơn trong cuộc sống! 😄
+*Hãy cười nhiều hơn trong cuộc sống! 😄*
