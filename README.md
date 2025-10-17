@@ -12,7 +12,7 @@ Một ứng dụng web đơn giản giúp tạo ra các joke ngẫu nhiên bằn
 
 ## 🚀 Demo
 
-Ứng dụng được deploy tại: [https://joke-generator-vercel.app](https://joke-generator-vercel.app) _(hoặc URL deploy của bạn)_
+Ứng dụng được deploy tại: [https://joke-generator-one-sand.vercel.app/]
 
 ## 📋 Yêu cầu
 
