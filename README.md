@@ -22,6 +22,8 @@ Hoặc chạy locally bằng cách mở `index.html` trong trình duyệt web c�
 
 ## 📖 Cách sử dụng
 
+### Local Development
+
 1. **Clone repository**:
 
    ```bash
@@ -29,15 +31,35 @@ Hoặc chạy locally bằng cách mở `index.html` trong trình duyệt web c�
    cd joke-generator
    ```
 
-2. **Mở trong trình duyệt**:
-   - Double-click vào `index.html`
-   - Hoặc sử dụng live server extension trong VS Code
+2. **Cài đặt dependencies** (cho build script):
 
-3. **Thưởng thức**:
-   - Nhấn "Nhận Joke Mới" để lấy joke ngẫu nhiên
-   - Nhấn "Giải Thích" để AI phân tích chi tiết
-   - Nhấn "Dịch" để chuyển sang tiếng Việt
-   - Nhấn "Đóng" để ẩn phần giải thích
+   ```bash
+   npm init -y
+   npm install dotenv --save-dev
+   ```
+
+3. **Cấu hình API key**:
+   - Copy `.env.example` thành `.env`
+   - Thay thế `your_api_key_here` bằng API key thực của bạn
+
+4. **Build và chạy**:
+
+   ```bash
+   node build.js
+   # Sau đó mở dist/index.html trong trình duyệt
+   ```
+
+### Hoặc chạy trực tiếp (development only)
+
+- Double-click vào `index.html`
+- Hoặc sử dụng live server extension trong VS Code
+
+### Sử dụng
+
+- Nhấn "Nhận Joke Mới" để lấy joke ngẫu nhiên
+- Nhấn "Giải Thích" để AI phân tích chi tiết
+- Nhấn "Dịch" để chuyển sang tiếng Việt
+- Nhấn "Đóng" để ẩn phần giải thích
 
 ## 🔑 Cài đặt API Key cho tính năng AI
 
@@ -93,6 +115,10 @@ joke-generator/
 ├── index.html          # File HTML chính với cấu trúc responsive
 ├── style.css           # Stylesheet hiện đại với gradient và animations
 ├── script.js           # Logic ứng dụng và tích hợp API
+├── build.js            # Script build để replace environment variables
+├── .env.example        # Template cho environment variables
+├── .env                # Environment variables (không commit)
+├── .gitignore          # Git ignore rules
 ├── README.md           # Tài liệu này
 ├── LICENSE             # Giấy phép MIT
 └── test-api.md         # Hướng dẫn test API (tùy chọn)
@@ -161,4 +187,4 @@ Chúng tôi hoan nghênh mọi đóng góp!
 
 **Tạo bởi [TienxDun](https://github.com/TienxDun)** với ❤️ và ☕
 
-*Hãy cười nhiều hơn trong cuộc sống! 😄*
+Hãy cười nhiều hơn trong cuộc sống! 😄
