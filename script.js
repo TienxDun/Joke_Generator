@@ -8,6 +8,23 @@ const loader = document.getElementById('loader');
 const API_URL = 'https://v2.jokeapi.dev/joke/Any?safe-mode=true';
 const PUNCHLINE_DELAY = 500; // Delay in ms before showing punchline
 
+// Function to translate text from English to Vietnamese
+async function translateText(text) {
+    try {
+        const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=${encodeURIComponent(text)}`);
+        
+        if (!response.ok) {
+            throw new Error('Translation failed');
+        }
+
+        const data = await response.json();
+        return data[0][0][0]; // Extract translated text
+    } catch (error) {
+        console.error('Translation error:', error);
+        return text; // Return original text if translation fails
+    }
+}
+
 // Function to fetch a random joke
 async function getJoke() {
     try {
@@ -33,15 +50,18 @@ async function getJoke() {
         // Display the joke based on type
         if (data.type === 'single') {
             // Single-line joke
-            jokeText.textContent = data.joke;
+            const translatedJoke = await translateText(data.joke);
+            jokeText.textContent = translatedJoke;
             punchline.textContent = '';
         } else if (data.type === 'twopart') {
             // Two-part joke (setup and delivery)
-            jokeText.textContent = data.setup;
+            const translatedSetup = await translateText(data.setup);
+            jokeText.textContent = translatedSetup;
             
             // Show punchline after a short delay for better effect
-            setTimeout(() => {
-                punchline.textContent = data.delivery;
+            setTimeout(async () => {
+                const translatedDelivery = await translateText(data.delivery);
+                punchline.textContent = translatedDelivery;
             }, PUNCHLINE_DELAY);
         }
 
@@ -49,7 +69,7 @@ async function getJoke() {
         // Handle errors
         loader.classList.remove('active');
         jokeBtn.disabled = false;
-        jokeText.textContent = 'Oops! Something went wrong. Please try again.';
+        jokeText.textContent = 'Ối! Có lỗi xảy ra. Vui lòng thử lại.';
         punchline.textContent = '';
         console.error('Error fetching joke:', error);
     }

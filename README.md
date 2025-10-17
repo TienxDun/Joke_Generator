@@ -1,71 +1,71 @@
-# Random Joke Generator 😂
+# Máy Tạo Joke Ngẫu Nhiên 😂
 
-A simple and fun random joke generator that fetches jokes from a public API and displays them to users with an attractive interface.
+Một ứng dụng tạo joke ngẫu nhiên đơn giản và vui nhộn, lấy joke từ API công khai và hiển thị chúng với giao diện hấp dẫn.
 
-## Features
+## Tính năng
 
-- 🎲 Fetches random jokes from [JokeAPI](https://v2.jokeapi.dev)
-- 🎨 Clean and modern user interface
-- 📱 Responsive design - works on all devices
-- ⚡ Fast and lightweight
-- 🔒 Safe mode enabled (family-friendly jokes)
-- 🎭 Supports both single-line and two-part jokes
+- 🎲 Lấy joke ngẫu nhiên từ [JokeAPI](https://v2.jokeapi.dev)
+- 🎨 Giao diện người dùng sạch sẽ và hiện đại
+- 📱 Thiết kế đáp ứng - hoạt động trên tất cả thiết bị
+- ⚡ Nhanh chóng và nhẹ nhàng
+- 🔒 Chế độ an toàn được bật (joke thân thiện với gia đình)
+- 🎭 Hỗ trợ cả joke một dòng và joke hai phần
 
 ## Demo
 
-Simply open `index.html` in your web browser to start getting random jokes!
+Đơn giản mở `index.html` trong trình duyệt web của bạn để bắt đầu nhận joke ngẫu nhiên!
 
-## How to Use
+## Cách sử dụng
 
-1. Clone or download this repository
-2. Open `index.html` in your web browser
-3. Click the "Get New Joke" button to fetch a random joke
-4. Enjoy the jokes! 🎉
+1. Clone hoặc tải xuống repository này
+2. Mở `index.html` trong trình duyệt web của bạn
+3. Nhấn nút "Nhận Joke Mới" để lấy một joke ngẫu nhiên
+4. Thưởng thức các joke! 🎉
 
-## Technologies Used
+## Công nghệ sử dụng
 
-- **HTML5** - Structure
-- **CSS3** - Styling with modern gradients and animations
-- **JavaScript (ES6+)** - API integration and interactivity
-- **JokeAPI** - Public API for fetching jokes
+- **HTML5** - Cấu trúc
+- **CSS3** - Tạo kiểu với gradient và animation hiện đại
+- **JavaScript (ES6+)** - Tích hợp API và tương tác
+- **JokeAPI** - API công khai để lấy joke
 
-## API Information
+## Thông tin API
 
-This project uses [JokeAPI v2](https://v2.jokeapi.dev/), a free and public API that provides:
-- Various joke categories
-- Safe mode filtering
-- Both single and two-part jokes
-- No authentication required
+Dự án này sử dụng [JokeAPI v2](https://v2.jokeapi.dev/), một API miễn phí và công khai cung cấp:
+- Các danh mục joke đa dạng
+- Lọc chế độ an toàn
+- Cả joke một dòng và hai phần
+- Không yêu cầu xác thực
 
-## Project Structure
+## Cấu trúc dự án
 
 ```
 joke-generator/
-├── index.html      # Main HTML file
-├── style.css       # Stylesheet for the application
-├── script.js       # JavaScript for API calls and interactivity
-├── LICENSE         # MIT License
-└── README.md       # This file
+├── index.html      # File HTML chính
+├── style.css       # Stylesheet cho ứng dụng
+├── script.js       # JavaScript cho các cuộc gọi API và tương tác
+├── LICENSE         # Giấy phép MIT
+└── README.md       # File này
 ```
 
-## Browser Support
+## Hỗ trợ trình duyệt
 
-Works on all modern browsers:
+Hoạt động trên tất cả trình duyệt hiện đại:
 - Chrome
 - Firefox
 - Safari
 - Edge
 - Opera
 
-## License
+## Giấy phép
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Dự án này được cấp phép theo Giấy phép MIT - xem file [LICENSE](LICENSE) để biết chi tiết.
 
-## Contributing
+## Đóng góp
 
-Feel free to fork this project and submit pull requests for any improvements!
+Hãy thoải mái fork dự án này và gửi pull requests cho bất kỳ cải tiến nào!
 
-## Acknowledgments
+## Lời cảm ơn
 
-- Thanks to [JokeAPI](https://jokeapi.dev/) for providing the free joke API
-- Inspired by the need for a quick laugh during coding sessions 😄
+- Cảm ơn [JokeAPI](https://jokeapi.dev/) đã cung cấp API joke miễn phí
+- Được lấy cảm hứng từ nhu cầu cười nhanh trong các phiên coding 😄
