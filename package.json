@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'No build step required'",
+    "build": "node build.js",
     "start": "vercel dev"
   },
   "keywords": ["joke", "generator", "web-app"],

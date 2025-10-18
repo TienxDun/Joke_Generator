@@ -36,17 +36,17 @@ function build() {
         scriptContent = scriptContent.replace(regex, `'${env[key]}'`);
     });
 
-    // Write to dist/script.js
-    if (!fs.existsSync('dist')) {
-        fs.mkdirSync('dist');
+    // Write to public/script.js
+    if (!fs.existsSync('public')) {
+        fs.mkdirSync('public');
     }
 
-    fs.writeFileSync('dist/script.js', scriptContent);
-    fs.copyFileSync('index.html', 'dist/index.html');
-    fs.copyFileSync('style.css', 'dist/style.css');
+    fs.writeFileSync('public/script.js', scriptContent);
+    fs.copyFileSync('index.html', 'public/index.html');
+    fs.copyFileSync('style.css', 'public/style.css');
 
-    console.log('Build completed! Files in dist/ folder');
-    console.log('Open dist/index.html in your browser');
+    console.log('Build completed! Files in public/ folder');
+    console.log('Open public/index.html in your browser');
 }
 
 if (require.main === module) {
