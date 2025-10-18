@@ -4,7 +4,6 @@
   "description": "A simple joke generator web app",
   "main": "index.html",
   "scripts": {
-    "dev": "vercel dev",
     "build": "node build.js",
     "start": "vercel dev"
   },
