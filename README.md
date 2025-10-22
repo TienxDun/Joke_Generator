@@ -7,7 +7,9 @@ Một ứng dụng web đơn giản để tạo và giải thích joke ngẫu nh
 - 🎲 Tạo joke ngẫu nhiên từ JokeAPI (chế độ an toàn)
 - 🌐 Dịch joke sang tiếng Việt bằng Google Translate
 - 🤔 Giải thích joke bằng AI (Gemini) với phân tích hài hước
-- 📱 Giao diện thân thiện, responsive, hỗ trợ mobile
+- � **Chọn model AI**: Gemini 2.5 Flash, 2.0 Flash, 2.5 Pro, hoặc Pro
+- �📱 Giao diện thân thiện, responsive, hỗ trợ mobile
+- 💾 Lưu lựa chọn model trong trình duyệt
 - ⚡ Tải nhanh, không cần cài đặt
 
 ## Yêu cầu hệ thống
@@ -48,10 +50,16 @@ Sau đó mở `http://localhost:3000` trong trình duyệt hoặc file `public/i
 
 ## Sử dụng
 
-1. Nhấn nút "Nhận Joke Mới" để lấy joke ngẫu nhiên
-2. Joke sẽ hiển thị với hiệu ứng delay cho punchline
-3. Sử dụng nút "Dịch Tiếng Việt" để dịch sang tiếng Việt
-4. Nhấn "Giải thích" để xem phân tích hài hước từ AI
+1. **Chọn model AI**: Sử dụng dropdown "Model AI" để chọn model Gemini phù hợp
+   - Gemini 2.5 Flash: Nhanh nhất, phù hợp cho hầu hết trường hợp
+   - Gemini 2.0 Flash: Phiên bản ổn định trước đó
+   - Gemini 2.5 Pro: Model mạnh hơn, chi tiết hơn
+2. Nhấn nút "Nhận Joke Mới" để lấy joke ngẫu nhiên
+3. Joke sẽ hiển thị với hiệu ứng delay cho punchline
+4. Sử dụng nút "Dịch Tiếng Việt" để dịch sang tiếng Việt
+5. Nhấn "Giải thích" để xem phân tích hài hước từ AI đã chọn
+
+**Lưu ý**: Lựa chọn model sẽ được lưu tự động trong trình duyệt.
 
 ## Deploy
 

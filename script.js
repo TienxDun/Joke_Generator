@@ -8,12 +8,14 @@ const closeExplanationBtn = document.getElementById('close-explanation');
 const loader = document.getElementById('loader');
 const explanation = document.getElementById('explanation');
 const explanationContent = document.querySelector('.explanation-content');
+const modelSelect = document.getElementById('model-select');
 
 // Store current joke data
 let currentJoke = null;
 let isTranslated = false;
 let originalJokeText = '';
 let originalPunchline = '';
+let selectedModel = 'gemini-2.5-flash'; // Default model
 
 // JokeAPI endpoint - using v2.jokeapi.dev
 const API_URL = 'https://v2.jokeapi.dev/joke/Any?safe-mode=true';
@@ -54,7 +56,7 @@ async function explainJokeWithGemini(jokeText) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ jokeText })
+            body: JSON.stringify({ jokeText, model: selectedModel })
         });
 
         if (!response.ok) {
@@ -198,6 +200,26 @@ async function explainJoke() {
     }
 }
 
+// Function to save model selection to localStorage
+function saveModelSelection() {
+    localStorage.setItem('selectedGeminiModel', selectedModel);
+}
+
+// Function to load model selection from localStorage
+function loadModelSelection() {
+    const savedModel = localStorage.getItem('selectedGeminiModel');
+    if (savedModel) {
+        selectedModel = savedModel;
+        modelSelect.value = savedModel;
+    }
+}
+
+// Function to handle model selection change
+function handleModelChange(event) {
+    selectedModel = event.target.value;
+    saveModelSelection();
+}
+
 // Function to close explanation
 function closeExplanation() {
     explanation.style.display = 'none';
@@ -208,7 +230,8 @@ jokeBtn.addEventListener('click', getJoke);
 translateBtn.addEventListener('click', translateCurrentJoke);
 explainBtn.addEventListener('click', explainJoke);
 closeExplanationBtn.addEventListener('click', closeExplanation);
+modelSelect.addEventListener('change', handleModelChange);
 
-// Optionally, load a joke when the page first loads
-// Uncomment the line below if you want an initial joke
+// Load saved model selection on page load
+window.addEventListener('DOMContentLoaded', loadModelSelection);
 // window.addEventListener('DOMContentLoaded', getJoke);

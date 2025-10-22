@@ -12,9 +12,21 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { jokeText } = req.body;
+    const { jokeText, model = 'gemini-2.5-flash' } = req.body;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-    const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+
+    // Validate model
+    const validModels = [
+        'gemini-2.5-flash',
+        'gemini-2.0-flash',
+        'gemini-2.5-pro'
+    ];
+
+    if (!validModels.includes(model)) {
+        return res.status(400).json({ error: 'Invalid model specified' });
+    }
+
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
     try {
         const response = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
@@ -43,7 +55,9 @@ export default async function handler(req, res) {
         });
 
         if (!response.ok) {
-            throw new Error('Gemini API failed');
+            const errorText = await response.text();
+            console.error('Gemini API Error:', response.status, response.statusText, errorText);
+            throw new Error(`Gemini API failed: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
