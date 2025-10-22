@@ -7,8 +7,8 @@ Một ứng dụng web đơn giản để tạo và giải thích joke ngẫu nh
 - 🎲 Tạo joke ngẫu nhiên từ JokeAPI (chế độ an toàn)
 - 🌐 Dịch joke sang tiếng Việt bằng Google Translate
 - 🤔 Giải thích joke bằng AI (Gemini) với phân tích hài hước
-- � **Chọn model AI**: Gemini 2.5 Flash, 2.0 Flash, 2.5 Pro, hoặc Pro
-- �📱 Giao diện thân thiện, responsive, hỗ trợ mobile
+- 🧠 **Chọn model AI**: Gemini 2.5 Flash, 2.0 Flash, 2.5 Pro
+- 📱 Giao diện thân thiện, responsive, hỗ trợ mobile
 - 💾 Lưu lựa chọn model trong trình duyệt
 - ⚡ Tải nhanh, không cần cài đặt
 
