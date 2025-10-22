@@ -29,7 +29,9 @@ async function translateText(text) {
         }
 
         const data = await response.json();
-        return data[0][0][0]; // Extract translated text
+        // Extract all translated parts and join them
+        const translatedParts = data[0].map(part => part[0]);
+        return translatedParts.join('').trim();
     } catch (error) {
         console.error('Translation error:', error);
         return text; // Return original text if translation fails
