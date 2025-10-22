@@ -25,15 +25,18 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 contents: [{
                     parts: [{
-                        text: `Bạn là một chuyên gia hài hước. Hãy giải thích joke này một cách đơn giản, dễ hiểu và giữ được sự hài hước bằng tiếng Việt. Nếu joke bằng tiếng Anh, hãy giải thích bằng tiếng Việt. Nếu joke đã bằng tiếng Việt, hãy phân tích ý nghĩa và tại sao nó hài hước.
+                        text: `Bạn là một chuyên gia hài hước. 
+                        Hãy giải thích joke này một cách đơn giản, dễ hiểu và giữ được sự hài hước bằng tiếng Việt. 
+                        Nếu joke bằng tiếng Anh, hãy giải thích bằng tiếng Việt. 
+                        Nếu joke đã bằng tiếng Việt, hãy phân tích ý nghĩa và tại sao nó hài hước.
 
-Joke: "${jokeText}"
+                        Joke: "${jokeText}"
 
-Hướng dẫn:
-- Giải thích ngắn gọn, không dài dòng
-- Giữ được yếu tố bất ngờ và twist
-- Sử dụng ngôn ngữ gần gũi, thân thiện
-- Nếu là wordplay, hãy chỉ ra trò chơi chữ`
+                        Hướng dẫn:
+                        - Giải thích ngắn gọn, không dài dòng
+                        - Giữ được yếu tố bất ngờ và twist
+                        - Sử dụng ngôn ngữ gần gũi, thân thiện
+                        - Nếu là wordplay, hãy chỉ ra trò chơi chữ`
                     }]
                 }]
             })
