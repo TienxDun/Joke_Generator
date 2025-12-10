@@ -6,28 +6,55 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
     line-height: 1.6;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="liquid" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:rgba(255,255,255,0.1);stop-opacity:1" /><stop offset="100%" style="stop-color:rgba(255,255,255,0);stop-opacity:0" /></radialGradient></defs><circle cx="50" cy="50" r="50" fill="url(%23liquid)" /></svg>');
+    background-size: 200px 200px;
+    animation: liquidFlow 10s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes liquidFlow {
+    0%, 100% { transform: translateX(-50px) translateY(-50px) scale(1); }
+    50% { transform: translateX(50px) translateY(50px) scale(1.1); }
 }
 
 .container {
-    background: white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     padding: 0;
     max-width: 600px;
     width: 100%;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+    position: relative;
 }
 
 /* Header */
 .header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
     padding: 30px 40px 20px;
     text-align: center;
@@ -55,7 +82,10 @@ body {
 }
 
 .joke-display {
-    background: #f8f9fa;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
     padding: 30px;
     min-height: 120px;
@@ -64,12 +94,13 @@ body {
     justify-content: flex-start;
     align-items: flex-start;
     margin-bottom: 20px;
-    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 #joke-text {
     font-size: 1.2rem;
-    color: #333;
+    color: white;
     text-align: left;
     line-height: 1.7;
     word-wrap: break-word;
@@ -82,7 +113,7 @@ body {
 
 #punchline {
     font-size: 1.2rem;
-    color: #667eea;
+    color: #e0e0e0;
     font-weight: bold;
     text-align: left;
     line-height: 1.7;
@@ -94,20 +125,24 @@ body {
 
 /* Explanation */
 .explanation {
-    background: #f0f8ff;
-    border: 2px solid #e3f2fd;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .explanation-header {
-    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     padding: 15px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #e3f2fd;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .explanation-icon {
@@ -116,16 +151,16 @@ body {
 
 .explanation-title {
     font-weight: 600;
-    color: #1976d2;
+    color: white;
     flex: 1;
     text-align: center;
 }
 
 .close-btn {
-    background: none;
-    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     font-size: 1.5rem;
-    color: #666;
+    color: white;
     cursor: pointer;
     padding: 0;
     width: 30px;
@@ -138,25 +173,25 @@ body {
 }
 
 .close-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    color: #333;
+    background: rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
 }
 
 .explanation-content {
     padding: 20px;
     font-size: 0.95rem;
-    color: #333;
+    color: white;
     line-height: 1.6;
 }
 
 .explanation strong {
-    color: #667eea;
+    color: #e0e0e0;
     font-weight: 600;
 }
 
 .explanation em {
     font-style: italic;
-    color: #764ba2;
+    color: #c0c0c0;
 }
 
 /* Button Group */
@@ -168,7 +203,10 @@ body {
 }
 
 .primary-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
     border: none;
     padding: 18px 30px;
@@ -182,6 +220,28 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.primary-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.primary-btn:hover::before {
+    left: 100%;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
 }
 
 .primary-btn:hover {
@@ -200,9 +260,11 @@ body {
 }
 
 .secondary-btn {
-    background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
     padding: 12px 20px;
     font-size: 0.95rem;
     border-radius: 25px;
@@ -214,6 +276,29 @@ body {
     gap: 8px;
     flex: 1;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.secondary-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.secondary-btn:hover::before {
+    left: 100%;
+}
+
+.secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 .secondary-btn:hover {
@@ -351,17 +436,20 @@ body {
 
 .model-selector label {
     font-weight: 600;
-    color: #555;
+    color: white;
     font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 .model-dropdown {
     padding: 8px 12px;
-    border: 2px solid #e1e5e9;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
-    background: white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     font-size: 0.85rem;
-    color: #333;
+    color: white;
     cursor: pointer;
     transition: all 0.3s ease;
     min-width: 180px;
@@ -369,10 +457,15 @@ body {
 
 .model-dropdown:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
 .model-dropdown:hover {
-    border-color: #667eea;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.model-dropdown option {
+    color: black;
+    background: rgba(255, 255, 255, 0.9);
 }

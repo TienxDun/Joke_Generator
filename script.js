@@ -51,7 +51,7 @@ function parseMarkdownToHTML(markdown) {
 // Function to explain joke using backend API
 async function explainJokeWithGemini(jokeText) {
     try {
-        const response = await fetch('/api/explain', {
+        const response = await fetch('http://localhost:3000/api/explain', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
