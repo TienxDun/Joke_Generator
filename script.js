@@ -6,7 +6,7 @@ let currentJoke = null;
 let isTranslated = false;
 let originalJokeText = '';
 let originalPunchline = '';
-let selectedModel = 'gemini-2.5-flash';
+let selectedModel = 'gemini-3-flash';
 
 const API_URL = 'https://v2.jokeapi.dev/joke/Any?safe-mode=true';
 const PUNCHLINE_DELAY = 500;
@@ -133,7 +133,7 @@ function init3D() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     // Initial BG
-    const savedBg = localStorage.getItem('selectedBg') || 'torus';
+    const savedBg = localStorage.getItem('selectedBg') || 'waves';
     bgSelect.value = savedBg;
     switchBackground(savedBg);
 
@@ -279,18 +279,27 @@ async function explainJoke() {
     explanation.style.display = 'block';
     explanationContent.innerHTML = 'Đang giải thích...';
     explainBtn.disabled = true;
+
     try {
         const jokeStr = currentJoke.type === 'single' ? currentJoke.joke : `${currentJoke.setup} ${currentJoke.delivery}`;
+        
         const response = await fetch('/api/explain', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ jokeText: jokeStr, model: selectedModel })
         });
+        
+        if (!response.ok) throw new Error('API Error');
+        
         const data = await response.json();
         explanationContent.innerHTML = data.explanation.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
         gsap.from(explanation, { height: 0, opacity: 0, duration: 0.5 });
-    } catch (e) { explanationContent.innerHTML = 'Không thể giải thích lúc này.'; }
-    finally { explainBtn.disabled = false; }
+    } catch (e) {
+        console.error('Explanation Error:', e);
+        explanationContent.innerHTML = 'Không thể giải thích lúc này.';
+    } finally {
+        explainBtn.disabled = false;
+    }
 }
 
 window.addEventListener('load', () => {

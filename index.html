@@ -13,13 +13,14 @@
     </svg>">
     
     <title>Máy Tạo Joke Ngẫu Nhiên</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <!-- Favicon inline để tránh lỗi 404 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😂</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <!-- Three.js and GSAP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.159.0/build/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 
@@ -74,9 +75,9 @@
                     <label for="model-select">Trí tuệ nhân tạo</label>
                     <div class="select-wrapper">
                         <select id="model-select" class="model-dropdown">
+                            <option value="gemini-3-flash">Gemini 3 Flash</option>
                             <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-                            <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
-                            <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                            <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash Lite</option>
                         </select>
                     </div>
                 </div>
@@ -85,8 +86,8 @@
                     <label for="bg-select">Không gian 3D</label>
                     <div class="select-wrapper">
                         <select id="bg-select" class="model-dropdown">
+                            <option value="waves" selected>Neon Waves</option>
                             <option value="torus">Classic Knot</option>
-                            <option value="waves">Neon Waves</option>
                             <option value="particles">Deep Space</option>
                             <option value="floating">Geometric</option>
                             <option value="wormhole">Wormhole</option>

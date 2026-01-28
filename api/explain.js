@@ -12,14 +12,14 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { jokeText, model = 'gemini-2.5-flash' } = req.body;
+    const { jokeText, model = 'gemini-3-flash' } = req.body;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
     // Validate model
     const validModels = [
+        'gemini-3-flash',
         'gemini-2.5-flash',
-        'gemini-2.0-flash',
-        'gemini-2.5-pro'
+        'gemini-2.5-flash-lite'
     ];
 
     if (!validModels.includes(model)) {
@@ -37,18 +37,17 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 contents: [{
                     parts: [{
-                        text: `Bạn là một chuyên gia hài hước. 
-                        Hãy giải thích joke này một cách đơn giản, dễ hiểu và giữ được sự hài hước bằng tiếng Việt. 
-                        Nếu joke bằng tiếng Anh, hãy giải thích bằng tiếng Việt. 
-                        Nếu joke đã bằng tiếng Việt, hãy phân tích ý nghĩa và tại sao nó hài hước.
+                        text: `Bạn là một chuyên gia phân tích hài hước có kiến thức sâu rộng về văn hóa và ngôn ngữ.
+                        Hãy giải thích câu đùa (joke) dưới đây một cách thông minh, hóm hỉnh và dễ hiểu bằng tiếng Việt.
 
                         Joke: "${jokeText}"
 
-                        Hướng dẫn:
-                        - Giải thích ngắn gọn, không dài dòng
-                        - Giữ được yếu tố bất ngờ và twist
-                        - Sử dụng ngôn ngữ gần gũi, thân thiện
-                        - Nếu là wordplay, hãy chỉ ra trò chơi chữ`
+                        Yêu cầu chi tiết:
+                        1. Tóm tắt ngắn gọn nội dung nếu là tiếng Anh.
+                        2. Phân tích "điểm gây cười" (punchline): Tại sao nó lại buồn cười? Có yếu tố bất ngờ hay chơi chữ (wordplay) nào không?
+                        3. Nếu có chơi chữ, hãy giải thích rõ nghĩa của các từ liên quan.
+                        4. Giữ văn phong tự nhiên, trẻ trung, có thể sử dụng biểu tượng cảm xúc (emoji) phù hợp.
+                        5. Định dạng: Sử dụng **chữ in đậm** cho các từ khóa quan trọng. Không cần mở đầu bằng "Đây là giải thích...".`
                     }]
                 }]
             })
