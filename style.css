@@ -60,8 +60,10 @@ body {
         inset 0 0 0 1px rgba(255, 255, 255, 0.05);
     border-radius: 28px;
     padding: 0;
-    width: 100%;
-    max-width: 500px;
+    width: 95%;
+    /* Use percentage to be responsive */
+    max-width: 600px;
+    /* Increased from 500px to fit contents better */
     position: relative;
     z-index: 10;
     overflow: visible;
@@ -134,6 +136,55 @@ body {
     box-shadow: inset 0 2px 15px rgba(0, 0, 0, 0.3);
     margin-bottom: 25px;
     transition: all 0.3s ease;
+}
+
+.joke-tools {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    /* Hidden by default until hover or joke loaded */
+    transition: opacity 0.3s ease;
+}
+
+.joke-display:hover .joke-tools,
+.joke-display.has-joke .joke-tools {
+    opacity: 1;
+}
+
+.tool-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+
+.tool-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    transform: scale(1.1);
+}
+
+.active-tool {
+    color: var(--secondary-color);
+    background: rgba(0, 198, 255, 0.15);
+    animation: toolPulse 1s infinite;
+}
+
+@keyframes toolPulse {
+    50% {
+        transform: scale(1.2);
+    }
 }
 
 #joke-text {
@@ -290,8 +341,13 @@ body {
 }
 
 .secondary-buttons {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
+}
+
+.secondary-btn.full-width {
+    grid-column: span 2;
 }
 
 .secondary-btn {
@@ -302,7 +358,10 @@ body {
     border-radius: 14px;
     font-size: 0.95rem;
     font-weight: 600;
-    flex: 1;
+    width: 100%;
+    /* Ensure full width in grid cell */
+    justify-content: center;
+    /* Center content explicitly */
 }
 
 .secondary-btn:hover {
@@ -331,6 +390,8 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 15px;
+    flex-wrap: wrap;
+    /* Allow wrapping on very small screens */
 }
 
 .model-selector label,
@@ -340,6 +401,8 @@ body {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
+    flex-shrink: 0;
+    /* Prevent label from squishing */
 }
 
 .model-dropdown {
@@ -351,7 +414,10 @@ body {
     font-family: var(--font-main);
     font-size: 0.85rem;
     cursor: pointer;
-    min-width: 180px;
+    min-width: 150px;
+    /* Reduced slightly */
+    flex: 1;
+    /* Allow it to take available space */
     transition: all 0.3s;
 }
 
@@ -407,4 +473,131 @@ body {
     .secondary-buttons {
         flex-direction: column;
     }
+}
+
+/* --- Saved Jokes Modal --- */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: #1a1a2e;
+    background: linear-gradient(135deg, rgba(20, 20, 35, 0.95), rgba(30, 30, 50, 0.9));
+    border: 1px solid var(--glass-border);
+    padding: 2rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+.saved-list {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* Scrollbar for saved list */
+.saved-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.saved-list::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+}
+
+.saved-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.saved-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+}
+
+.saved-item p {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.saved-item .saved-setup {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
+}
+
+.delete-joke-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #ff4757;
+    cursor: pointer;
+    font-size: 1.2rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.delete-joke-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.empty-state {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 2rem;
+    font-style: italic;
 }

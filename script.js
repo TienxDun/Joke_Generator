@@ -1,5 +1,6 @@
 // --- Global Elements ---
-let jokeText, punchline, jokeBtn, translateBtn, explainBtn, closeExplanationBtn, loader, explanation, explanationContent, modelSelect, bgSelect;
+let jokeText, punchline, jokeBtn, translateBtn, explainBtn, saveBtn, viewSavedBtn, closeSavedBtn, closeExplanationBtn, loader, explanation, explanationContent, modelSelect, bgSelect, savedJokesModal, savedList, savedCount;
+let copyBtn, speakBtn, jokeDisplay;
 
 // Store current joke data
 let currentJoke = null;
@@ -27,6 +28,16 @@ function initElements() {
     explanationContent = document.querySelector('.explanation-content');
     modelSelect = document.getElementById('model-select');
     bgSelect = document.getElementById('bg-select');
+    saveBtn = document.getElementById('save-btn');
+    viewSavedBtn = document.getElementById('view-saved-btn');
+    closeSavedBtn = document.getElementById('close-saved-btn');
+    savedJokesModal = document.getElementById('saved-jokes-modal');
+    savedList = document.getElementById('saved-list');
+    savedList = document.getElementById('saved-list');
+    savedCount = document.getElementById('saved-count');
+    copyBtn = document.getElementById('copy-btn');
+    speakBtn = document.getElementById('speak-btn');
+    jokeDisplay = document.querySelector('.joke-display');
 }
 
 // --- Background Clean Up ---
@@ -202,8 +213,10 @@ async function getJoke() {
     try {
         loader.style.display = 'block';
         jokeBtn.disabled = true;
+        jokeBtn.disabled = true;
         translateBtn.style.display = 'none';
         explainBtn.style.display = 'none';
+        saveBtn.style.display = 'none';
         explanation.style.display = 'none';
         jokeText.textContent = '';
         punchline.textContent = '';
@@ -216,6 +229,15 @@ async function getJoke() {
         currentJoke = data;
         isTranslated = false;
 
+        // Save original text for translation toggling
+        if (data.type === 'single') {
+            originalJokeText = data.joke;
+            originalPunchline = '';
+        } else {
+            originalJokeText = data.setup;
+            originalPunchline = data.delivery;
+        }
+
         const setJokeContent = (t1, t2) => {
             jokeText.textContent = t1;
             if (t2) {
@@ -226,13 +248,25 @@ async function getJoke() {
             }
         };
 
+        jokeDisplay.classList.add('has-joke');
+
         if (data.type === 'single') setJokeContent(data.joke);
         else setJokeContent(data.setup, data.delivery);
 
         gsap.fromTo('#joke-text', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5 });
-        translateBtn.style.display = 'inline-block';
+        translateBtn.style.display = 'flex';
         translateBtn.textContent = 'Dịch sang Tiếng Việt';
-        explainBtn.style.display = 'inline-block';
+        explainBtn.style.display = 'flex';
+        saveBtn.style.display = 'flex';
+        saveBtn.textContent = 'Lưu';
+        saveBtn.classList.remove('active-save');
+        saveBtn.disabled = false;
+
+        // Remove full-width from Saved button as it now shares space
+        viewSavedBtn.classList.remove('full-width');
+
+        // Update state based on current joke
+        updateSaveButtonState();
     } catch (e) {
         loader.style.display = 'none';
         jokeBtn.disabled = false;
@@ -259,7 +293,6 @@ async function translateCurrentJoke() {
             punchline.textContent = originalPunchline;
             isTranslated = false;
             translateBtn.textContent = 'Dịch sang Tiếng Việt';
-            explainBtn.style.display = 'inline-block';
         } else {
             const t1 = await translateText(currentJoke.type === 'single' ? currentJoke.joke : currentJoke.setup);
             jokeText.textContent = t1;
@@ -269,38 +302,203 @@ async function translateCurrentJoke() {
             }
             isTranslated = true;
             translateBtn.textContent = 'Dịch sang Tiếng Anh';
-            explainBtn.style.display = 'none';
         }
     } finally { translateBtn.disabled = false; }
 }
 
 async function explainJoke() {
-    if (!currentJoke || isTranslated) return;
+    if (!currentJoke) return;
     explanation.style.display = 'block';
     explanationContent.innerHTML = 'Đang giải thích...';
     explainBtn.disabled = true;
 
     try {
         const jokeStr = currentJoke.type === 'single' ? currentJoke.joke : `${currentJoke.setup} ${currentJoke.delivery}`;
-        
+
         const response = await fetch('/api/explain', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ jokeText: jokeStr, model: selectedModel })
         });
-        
+
         if (!response.ok) throw new Error('API Error');
-        
+
         const data = await response.json();
         explanationContent.innerHTML = data.explanation.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-        gsap.from(explanation, { height: 0, opacity: 0, duration: 0.5 });
-    } catch (e) {
-        console.error('Explanation Error:', e);
-        explanationContent.innerHTML = 'Không thể giải thích lúc này.';
     } finally {
         explainBtn.disabled = false;
     }
 }
+
+// --- Saved Jokes Logic ---
+// --- Saved Jokes Logic ---
+function toggleSaveJoke() {
+    if (!currentJoke) return;
+
+    // Helper: Generate hash ID for jokes without ID
+    const getHashCode = (str) => {
+        let hash = 0;
+        if (str.length === 0) return hash;
+        for (let i = 0; i < str.length; i++) {
+            const chr = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + chr;
+            hash |= 0;
+        }
+        return hash;
+    };
+
+    // Use consistent ID generation
+    const stableId = currentJoke.id || getHashCode(originalJokeText + originalPunchline);
+
+    const jokeToToggle = {
+        setup: originalJokeText,
+        delivery: originalPunchline,
+        type: currentJoke.type,
+        id: stableId
+    };
+
+    let saved = JSON.parse(localStorage.getItem('savedJokes') || '[]');
+
+    // Check if exists
+    const index = saved.findIndex(j => j.id == stableId || (j.setup === jokeToToggle.setup && j.delivery === jokeToToggle.delivery));
+
+    if (index !== -1) {
+        // Exists -> Remove it
+        saved.splice(index, 1);
+        saveBtn.textContent = 'Lưu';
+        saveBtn.classList.remove('active-save');
+    } else {
+        // Not exists -> Add it
+        saved.push(jokeToToggle);
+        saveBtn.textContent = 'Đã lưu ❤️';
+        saveBtn.classList.add('active-save');
+    }
+
+    localStorage.setItem('savedJokes', JSON.stringify(saved));
+    updateSavedCount();
+
+    // Only re-render if modal is open to update list real-time
+    if (savedJokesModal.classList.contains('active')) {
+        renderSavedJokes();
+    }
+}
+
+function updateSaveButtonState() {
+    if (!currentJoke) return;
+
+    const getHashCode = (str) => {
+        let hash = 0;
+        if (str.length === 0) return hash;
+        for (let i = 0; i < str.length; i++) {
+            const chr = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + chr;
+            hash |= 0;
+        }
+        return hash;
+    };
+
+    const checkId = currentJoke.id || getHashCode(originalJokeText + originalPunchline);
+
+    const saved = JSON.parse(localStorage.getItem('savedJokes') || '[]');
+    const exists = saved.some(j => j.id == checkId || (j.setup === originalJokeText && j.delivery === originalPunchline));
+
+    if (exists) {
+        saveBtn.textContent = 'Đã lưu ❤️';
+        saveBtn.classList.add('active-save');
+    } else {
+        saveBtn.textContent = 'Lưu';
+        saveBtn.classList.remove('active-save');
+    }
+    saveBtn.disabled = false;
+}
+
+function updateSavedCount() {
+    const saved = JSON.parse(localStorage.getItem('savedJokes') || '[]');
+    savedCount.textContent = saved.length;
+}
+
+function openSavedModal() {
+    renderSavedJokes();
+    savedJokesModal.style.display = 'flex';
+    // Small delay to allow display flex to apply before opacity transition
+    setTimeout(() => {
+        savedJokesModal.classList.add('active');
+    }, 10);
+}
+
+function closeSavedModal() {
+    savedJokesModal.classList.remove('active');
+    setTimeout(() => {
+        savedJokesModal.style.display = 'none';
+    }, 300); // Match transition duration
+}
+
+function renderSavedJokes() {
+    const saved = JSON.parse(localStorage.getItem('savedJokes') || '[]');
+    if (saved.length === 0) {
+        savedList.innerHTML = '<p class="empty-state">Chưa lưu joke nào cả!</p>';
+        return;
+    }
+
+    savedList.innerHTML = saved.map(joke => `
+        <div class="saved-item">
+            <button class="delete-joke-btn" onclick="deleteJoke('${joke.id}')">×</button>
+            <p class="saved-setup">${joke.setup}</p>
+            ${joke.delivery ? `<p>${joke.delivery}</p>` : ''}
+        </div>
+    `).join('');
+}
+
+// Global function for delete button in innerHTML
+window.deleteJoke = function (id) {
+    let saved = JSON.parse(localStorage.getItem('savedJokes') || '[]');
+    saved = saved.filter(j => String(j.id) !== String(id));
+    localStorage.setItem('savedJokes', JSON.stringify(saved));
+    renderSavedJokes();
+    updateSavedCount();
+    updateSaveButtonState(); // Update main UI button if needed
+};
+
+// --- Utility Tools Logic ---
+function getFullJokeText() {
+    return `${jokeText.textContent}\n${punchline.textContent}`.trim();
+}
+
+async function copyJoke() {
+    if (!currentJoke) return;
+    try {
+        await navigator.clipboard.writeText(getFullJokeText());
+        const originalIcon = copyBtn.textContent;
+        copyBtn.textContent = '✅';
+        setTimeout(() => copyBtn.textContent = originalIcon, 2000);
+    } catch (e) {
+        console.error('Copy failed', e);
+    }
+}
+
+function speakJoke() {
+    if (!currentJoke) return;
+    if ('speechSynthesis' in window) {
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+
+        const text = getFullJokeText();
+        const utterance = new SpeechSynthesisUtterance(text);
+
+        // Simple language detection based on button state (naive but effective here)
+        utterance.lang = isTranslated ? 'vi-VN' : 'en-US';
+
+        // Provide visual feedback
+        speakBtn.classList.add('active-tool');
+        utterance.onend = () => speakBtn.classList.remove('active-tool');
+
+        window.speechSynthesis.speak(utterance);
+    } else {
+        alert('Trình duyệt của bạn không hỗ trợ đọc văn bản.');
+    }
+}
+
+
 
 window.addEventListener('load', () => {
     initElements();
@@ -314,10 +512,22 @@ window.addEventListener('load', () => {
     }
 
     init3D();
+    updateSavedCount();
 
     jokeBtn.addEventListener('click', getJoke);
     translateBtn.addEventListener('click', translateCurrentJoke);
     explainBtn.addEventListener('click', explainJoke);
+    saveBtn.addEventListener('click', toggleSaveJoke);
+    viewSavedBtn.addEventListener('click', openSavedModal);
+    closeSavedBtn.addEventListener('click', closeSavedModal);
+    savedJokesModal.addEventListener('click', (e) => {
+        if (e.target === savedJokesModal) closeSavedModal();
+    });
+
+    // Tools events
+    copyBtn.addEventListener('click', copyJoke);
+    speakBtn.addEventListener('click', speakJoke);
+
     closeExplanationBtn.addEventListener('click', () => explanation.style.display = 'none');
     modelSelect.addEventListener('change', (e) => {
         selectedModel = e.target.value;
