@@ -135,12 +135,17 @@ function init3D() {
     const canvas = document.getElementById('canvas3d');
     if (!canvas) return;
 
+    // Detect touch device early
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+    
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 5;
 
     renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
+    // Limit pixel ratio on mobile for performance
+    const pixelRatio = Math.min(window.devicePixelRatio, isTouchDevice ? 2 : 3);
+    renderer.setPixelRatio(pixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     // Initial BG
@@ -148,11 +153,28 @@ function init3D() {
     bgSelect.value = savedBg;
     switchBackground(savedBg);
 
-    document.addEventListener('mousemove', (e) => {
-        mouseX = (e.clientX - window.innerWidth / 2) / 1000;
-        mouseY = (e.clientY - window.innerHeight / 2) / 1000;
-        gsap.to('.main-ui', { rotationY: mouseX * 4, rotationX: -mouseY * 4, duration: 0.8 });
-    });
+    // Mouse interaction for desktop
+    
+    if (!isTouchDevice) {
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) / 1000;
+            mouseY = (e.clientY - window.innerHeight / 2) / 1000;
+            gsap.to('.main-ui', { rotationY: mouseX * 4, rotationX: -mouseY * 4, duration: 0.8 });
+        });
+    } else {
+        // Disable 3D tilt on mobile for better performance
+        gsap.set('.main-ui', { rotationY: 0, rotationX: 0 });
+    }
+    
+    // Touch events for mobile
+    let touchStartY = 0;
+    document.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    
+    document.addEventListener('touchmove', (e) => {
+        // Allow default scrolling
+    }, { passive: true });
 
     const clock = new THREE.Clock();
 
@@ -200,12 +222,18 @@ function init3D() {
 }
 
 function initMotion() {
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+    
     gsap.set('.main-ui', { visibility: 'visible' });
+    
+    // Simpler animation for mobile
+    const duration = isTouchDevice ? 0.8 : 1.5;
     const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-    tl.fromTo('.main-ui', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.5 })
-        .fromTo('.header h1', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 1 }, "-=1")
-        .fromTo('.emoji', { rotate: -180, scale: 0 }, { rotate: 0, scale: 1, duration: 1.2, ease: "elastic.out(1, 0.5)" }, "-=0.8")
-        .fromTo('.joke-btn', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.1 }, "-=1");
+    
+    tl.fromTo('.main-ui', { opacity: 0, y: isTouchDevice ? 20 : 50 }, { opacity: 1, y: 0, duration: duration })
+        .fromTo('.header h1', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: isTouchDevice ? 0.6 : 1 }, "-=0.5")
+        .fromTo('.emoji', { rotate: -180, scale: 0 }, { rotate: 0, scale: 1, duration: isTouchDevice ? 0.6 : 1.2, ease: "elastic.out(1, 0.5)" }, "-=0.4")
+        .fromTo('.joke-btn', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: isTouchDevice ? 0.5 : 0.8, stagger: 0.08 }, "-=0.4");
 }
 
 // --- Joke Fetch Logic ---
@@ -240,11 +268,15 @@ async function getJoke() {
 
         const setJokeContent = (t1, t2) => {
             jokeText.textContent = t1;
+            originalJokeText = t1;
             if (t2) {
+                originalPunchline = t2;
                 setTimeout(() => {
                     punchline.textContent = t2;
                     gsap.fromTo('#punchline', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5 });
                 }, PUNCHLINE_DELAY);
+            } else {
+                originalPunchline = '';
             }
         };
 
@@ -514,6 +546,9 @@ window.addEventListener('load', () => {
     init3D();
     updateSavedCount();
 
+    // Use touchstart for faster response on mobile, click for desktop
+    const clickEvent = window.matchMedia('(pointer: coarse)').matches ? 'touchstart' : 'click';
+    
     jokeBtn.addEventListener('click', getJoke);
     translateBtn.addEventListener('click', translateCurrentJoke);
     explainBtn.addEventListener('click', explainJoke);
@@ -534,4 +569,11 @@ window.addEventListener('load', () => {
         localStorage.setItem('selectedGeminiModel', selectedModel);
     });
     bgSelect.addEventListener('change', (e) => switchBackground(e.target.value));
+    
+    // Handle viewport resize on mobile (keyboard appearance, etc.)
+    if ('visualViewport' in window) {
+        window.visualViewport.addEventListener('resize', () => {
+            document.body.style.height = window.visualViewport.height + 'px';
+        });
+    }
 });
