@@ -1,104 +1,99 @@
-# Máy Tạo Joke Ngẫu Nhiên
+# 🎭 Joke Generator AI - Premium Web Experience
 
-Một ứng dụng web đơn giản để tạo và giải thích joke ngẫu nhiên bằng tiếng Việt. Ứng dụng sử dụng JokeAPI để lấy joke từ nhiều nguồn, hỗ trợ dịch sang tiếng Việt và giải thích bằng AI.
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20Now-brightgreen?style=for-the-badge)](https://joke-generator-one-sand.vercel.app/)
+[![Tech Stack](https://img.shields.io/badge/Tech-JS%20%7C%20Gemini%20%7C%20Vercel-blue?style=for-the-badge)]()
 
-## Tính năng
+Một ứng dụng web tinh tế kết hợp giữa dữ liệu hài hước từ **JokeAPI** và trí tuệ nhân tạo **Google Gemini AI** để không chỉ mang lại tiếng cười mà còn cung cấp những góc nhìn sâu sắc về văn hóa đằng sau mỗi câu đố.
 
-- 🎲 Tạo joke ngẫu nhiên từ JokeAPI (chế độ an toàn)
-- 🌐 Dịch joke sang tiếng Việt bằng Google Translate
-- 🤔 Giải thích joke bằng AI (Gemini) với phân tích hài hước
-- 🧠 **Chọn model AI**: Gemini 2.5 Flash, 2.0 Flash, 2.5 Pro
-- 📱 Giao diện thân thiện, responsive, hỗ trợ mobile
-- 💾 Lưu lựa chọn model trong trình duyệt
-- ⚡ Tải nhanh, không cần cài đặt
+---
 
-## Yêu cầu hệ thống
+## 📸 Demo & Screenshots
 
-- Node.js (phiên bản 14+)
-- Trình duyệt web hiện đại
-- API key từ Google Gemini (cho tính năng giải thích)
+<p align="center">
+  <img src="docs/screenshots/desktop_home.png" alt="Desktop Home" width="800">
+  <br>
+  <i>Giao diện chính với phong cách Modern Dark Mode & Glassmorphism</i>
+</p>
 
-## Cài đặt
+<table align="center">
+  <tr>
+    <td align="center"><b>Giải thích bằng AI (Gemini)</b></td>
+    <td align="center"><b>Tối ưu hóa di động (Responsive)</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/ai_explanation.png" width="450"></td>
+    <td><img src="docs/screenshots/mobile_view.png" width="250"></td>
+  </tr>
+</table>
 
-1. Clone repository:
+---
 
+## 🚀 Tính năng nổi bật (Technical Highlights)
+
+- **AI-Powered Explanations**: Tích hợp **Google Gemini SDK** (với các tùy chọn model 2.5 Flash, 2.0 Flash, Pro) để phân tích ngữ nghĩa, lối chơi chữ (pun) và ngữ cảnh văn hóa của câu đố.
+- **Multi-language Support**: Hệ thống tự động dịch thuật kết hợp giữa Google Translate API và prompt engineering để giữ nguyên "chất" hài hước khi chuyển sang tiếng Việt.
+- **Modern UI/UX**:
+  - Giao diện **Glassmorphism** sang trọng với hiệu ứng ánh sáng động.
+  - Hiệu ứng **Typing Animation** cho punchline nhằm tăng tính bất ngờ.
+  - Hệ thống Background Mesh gradient chuyển động mượt mà.
+- **Persistence**: Lưu trữ cấu hình người dùng (Model AI, Theme) qua **LocalStorage**.
+- **Edge Deployment**: Triển khai trên **Vercel** với kiến trúc **Serverless Functions** để xử lý các tác vụ AI phía backend bảo mật và hiệu quả.
+
+---
+
+## 🛠️ Stack Công Nghệ
+
+| Layer | Technology |
+| :--- | :--- |
+| **Frontend** | Vanilla JavaScript (ES6+), HTML5 Semantic, CSS3 (Custom Variables, Flexbox/Grid) |
+| **AI Engine** | Google Gemini Generative AI (SDK v1.x) |
+| **Backend/Functions** | Node.js (Vercel Serverless Functions) |
+| **API Integration** | JokeAPI (REST), Google Translate API |
+| **Infrastructure** | Vercel (CI/CD, Edge Network) |
+
+---
+
+## 🏗️ Kiến trúc Hệ thống (System Architecture)
+
+Dự án được thiết kế theo mô hình tách biệt mối quan tâm (**Separation of Concerns**):
+
+1.  **Frontend Logic (`script.js`)**: Quản lý State của ứng dụng, tương tác DOM và điều phối các yêu cầu API.
+2.  **Serverless Layer (`api/explain.js`)**: Đóng vai trò làm Proxy để giao tiếp với Google Gemini API, đảm bảo bảo mật cho API Key và tối ưu hóa Payload trả về cho Client.
+3.  **UI Components**: Module hóa CSS để dễ dàng bảo trì và tối ưu SEO.
+
+---
+
+## 💻 Hướng dẫn Cài đặt & Chạy Locally
+
+### Prerequisites
+- Node.js (phiên bản 18+ khuyến nghị)
+- Một API Key từ [Google AI Studio](https://aistudio.google.com/)
+
+### Các bước thực hiện
+1. **Clone project:**
    ```bash
    git clone https://github.com/TienxDun/joke-generator.git
    cd joke-generator
    ```
-
-2. Cài đặt dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Tạo file `.env` và thêm API key:
-
+2. **Cấu hình môi trường:** Tạo file `.env` tại thư mục gốc:
    ```env
-   GEMINI_API_KEY=your_gemini_api_key_here
+   GEMINI_API_KEY=your_actual_api_key_here
+   ```
+3. **Cài đặt & Chạy:**
+   ```bash
+   npm install        # Cài đặt serverless dependencies
+   npm run build     # Chạy script build để tổng hợp tài nguyên
+   npm start         # Khởi động server local (mặc định port 3000)
    ```
 
-## Chạy locally
+---
 
-```bash
-npm run build
-npm start
-```
+## 🤝 Liên hệ & Đóng góp
+Dự án được phát triển bởi **TienxDun**. Mọi ý kiến đóng góp hoặc cơ hội hợp tác xin vui lòng liên hệ qua:
 
-Sau đó mở `http://localhost:3000` trong trình duyệt hoặc file `public/index.html`.
+- **GitHub**: [@TienxDun](https://github.com/TienxDun)
+- **Email**: [leutiendung.hht@gmail.com](mailto:leutiendung.hht@gmail.com)
 
-## Sử dụng
-
-1. **Chọn model AI**: Sử dụng dropdown "Model AI" để chọn model Gemini phù hợp
-   - Gemini 2.5 Flash: Nhanh nhất, phù hợp cho hầu hết trường hợp
-   - Gemini 2.0 Flash: Phiên bản ổn định trước đó
-   - Gemini 2.5 Pro: Model mạnh hơn, chi tiết hơn
-2. Nhấn nút "Nhận Joke Mới" để lấy joke ngẫu nhiên
-3. Joke sẽ hiển thị với hiệu ứng delay cho punchline
-4. Sử dụng nút "Dịch Tiếng Việt" để dịch sang tiếng Việt
-5. Nhấn "Giải thích" để xem phân tích hài hước từ AI đã chọn
-
-**Lưu ý**: Lựa chọn model sẽ được lưu tự động trong trình duyệt.
-
-## Deploy
-
-Dự án được cấu hình để deploy trên Vercel:
-
-```bash
-vercel --prod
-```
-
-Đảm bảo đã thiết lập biến môi trường `GEMINI_API_KEY` trong Vercel dashboard.
-
-## Cấu trúc dự án
-
-```text
-├── index.html          # Giao diện chính
-├── script.js           # Logic frontend (fetch API, translate, explain)
-├── style.css           # Styling responsive
-├── build.js            # Script build cho production
-├── vercel.json         # Cấu hình Vercel
-├── api/
-│   └── explain.js      # Serverless function giải thích joke
-└── public/             # Files build (tạo bởi build.js)
-```
-
-## API sử dụng
-
-- **[JokeAPI](https://v2.jokeapi.dev/)** - Nguồn joke đa dạng, hỗ trợ safe-mode
-- **Google Translate API** - Dịch tự động sang tiếng Việt
-- **Gemini AI** - Phân tích và giải thích joke một cách hài hước
-
-## Đóng góp
-
-Contributions welcome! Hãy tạo issue hoặc pull request.
-
-## Tác giả
-
-**TienxDun** - [GitHub](https://github.com/TienxDun)
-
-## License
-
-MIT
+---
+*Copyright © 2026 TienxDun. Licensed under the MIT License.*
 
