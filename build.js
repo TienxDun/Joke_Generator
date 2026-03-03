@@ -53,6 +53,4 @@ function build() {
     console.log('Open public/index.html in your browser');
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
-    build();
-}
+build();

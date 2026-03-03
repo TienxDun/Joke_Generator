@@ -445,33 +445,282 @@ body {
     }
 }
 
+/* --- Touch Optimization --- */
+@media (hover: none) and (pointer: coarse) {
+    .joke-btn:hover {
+        transform: none;
+        filter: none;
+    }
+    
+    .primary-btn:hover {
+        transform: none;
+        box-shadow: 0 10px 25px rgba(112, 0, 255, 0.3);
+    }
+    
+    .secondary-btn:hover {
+        transform: none;
+        background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .joke-btn:active {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+    
+    .model-dropdown {
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+}
+
 /* --- Responsive --- */
 @media (max-width: 600px) {
     body {
-        padding: 15px;
+        padding: 10px;
         align-items: center;
-        /* Set to center instead of flex-start */
+        justify-content: center;
+        min-height: 100vh;
+        min-height: 100dvh; /* Dynamic viewport height for mobile */
+        padding-top: max(env(safe-area-inset-top), 10px);
+        padding-bottom: max(env(safe-area-inset-bottom), 10px);
+        overflow-y: auto;
     }
 
     .container {
-        margin: 0;
-        /* Remove top margin that pushes it down */
+        margin: auto 0;
+        max-width: 100%;
+        border-radius: 20px;
     }
 
     .header {
-        padding: 25px 20px;
+        padding: 20px 15px 15px;
     }
 
     .header h1 {
-        font-size: 1.5rem;
+        font-size: 1.35rem;
+        letter-spacing: -0.3px;
+    }
+    
+    .emoji {
+        font-size: 2.5rem;
     }
 
     .main-content {
-        padding: 25px 20px;
+        padding: 20px 15px;
+    }
+    
+    /* Joke Display - Better for mobile reading */
+    .joke-display {
+        padding: 20px;
+        min-height: 120px;
+        margin-bottom: 20px;
+        border-radius: 16px;
+    }
+    
+    #joke-text {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        margin-bottom: 12px;
+    }
+    
+    #punchline {
+        font-size: 1.2rem;
+    }
+
+    /* Buttons - Larger touch targets */
+    .button-group {
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+    
+    .primary-btn {
+        padding: 16px 20px;
+        font-size: 1.05rem;
+        border-radius: 16px;
+        min-height: 56px; /* Minimum 56px touch target */
     }
 
     .secondary-buttons {
         flex-direction: column;
+        gap: 10px;
+    }
+    
+    .secondary-btn {
+        padding: 14px 16px;
+        font-size: 0.95rem;
+        min-height: 52px;
+        border-radius: 12px;
+    }
+    
+    /* Settings - Stack vertically on small screens */
+    .settings-group {
+        padding: 15px 0 5px;
+        gap: 10px;
+    }
+    
+    .model-selector,
+    .bg-selector {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    
+    .model-selector label,
+    .bg-selector label {
+        font-size: 0.7rem;
+    }
+    
+    .model-dropdown {
+        width: 100%;
+        min-width: unset;
+        padding: 10px 12px;
+        font-size: 16px; /* Prevent iOS zoom */
+    }
+    
+    /* Explanation Panel - Better for mobile */
+    .explanation {
+        margin-top: 15px;
+        border-radius: 12px;
+    }
+    
+    .explanation-header {
+        padding: 10px 15px;
+    }
+    
+    .explanation-title {
+        font-size: 0.8rem;
+    }
+    
+    .explanation-content {
+        padding: 15px;
+        font-size: 0.9rem;
+        max-height: 40vh; /* Use viewport height instead of fixed px */
+        -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+    }
+    
+    .close-btn {
+        padding: 8px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    /* Reduce animation intensity on mobile */
+    @keyframes pulseGlow {
+        0%, 100% {
+            box-shadow: 0 8px 20px rgba(112, 0, 255, 0.3);
+        }
+        50% {
+            box-shadow: 0 12px 25px rgba(132, 45, 226, 0.5);
+        }
+    }
+    
+    .emoji {
+        animation-duration: 2.5s; /* Slower animation for battery saving */
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+    body {
+        padding: 8px;
+    }
+    
+    .header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .emoji {
+        font-size: 2rem;
+    }
+    
+    .main-content {
+        padding: 15px 12px;
+    }
+    
+    .joke-display {
+        padding: 15px;
+    }
+    
+    #joke-text {
+        font-size: 1.05rem;
+    }
+    
+    #punchline {
+        font-size: 1.1rem;
+    }
+    
+    .primary-btn {
+        font-size: 0.95rem;
+        padding: 14px 16px;
+    }
+    
+    .secondary-btn {
+        font-size: 0.9rem;
+        padding: 12px 14px;
+    }
+}
+
+/* Landscape mode on small screens */
+@media (max-height: 500px) and (orientation: landscape) {
+    body {
+        padding: 10px;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .header {
+        padding: 15px 20px 10px;
+    }
+    
+    .header h1 {
+        font-size: 1.25rem;
+        margin-bottom: 5px;
+    }
+    
+    .emoji {
+        font-size: 2rem;
+        animation: none; /* Disable animation to save battery */
+    }
+    
+    .main-content {
+        padding: 15px 20px;
+    }
+    
+    .joke-display {
+        min-height: 80px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .button-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .primary-btn {
+        flex: 1 1 100%;
+        padding: 12px 20px;
+        min-height: 48px;
+    }
+    
+    .secondary-buttons {
+        flex-direction: row;
+        flex: 1 1 100%;
+    }
+    
+    .settings-group {
+        flex-direction: row;
+        padding: 10px 0 5px;
+    }
+    
+    .model-selector,
+    .bg-selector {
+        flex: 1;
+    }
+    
+    .explanation-content {
+        max-height: 35vh;
     }
 }
 
